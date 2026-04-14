@@ -1,3 +1,10 @@
+const result = document.querySelector("#result");
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+  button.addEventListener("click", playRound());
+});
+
 function getComputerChoice() {
   const randomNumber = Math.round(Math.random());
   if (randomNumber >= 0 && randomNumber <= 0.33) {
@@ -40,25 +47,25 @@ function playRound(humanChoice, computerChoice) {
 function playGame() {
   let humanScore = 0;
   let computerScore = 0;
-  for (let i = 0; i < 5; i++) {
-    console.log(`---Round ${i + 1} ---`);
-    const humanSelection = getHumanChoice();
-    const computerSelection = getComputerChoice();
-    let result = playRound(humanSelection, computerSelection);
-    if (result == "win") {
-      humanScore++;
-    }
-    if (result == "lose") {
-      computerScore++;
-    }
+
+  console.log(`---Round ${i + 1} ---`);
+  const humanSelection = getHumanChoice();
+  const computerSelection = getComputerChoice();
+  let result = playRound(humanSelection, computerSelection);
+  if (result == "win") {
+    humanScore++;
   }
+  if (result == "lose") {
+    computerScore++;
+  }
+
   console.log(
     `Final Score -> You :  ${humanScore}, Computer : ${computerScore}`,
   );
   if (humanScore > computerScore) {
     console.log("Your are the overall winner!");
   } else if (humanScore < computerScore) {
-    console.log("Computer win the huma!");
+    console.log("Computer win the human!");
   } else {
     console.log("It's tie!");
   }
