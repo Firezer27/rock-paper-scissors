@@ -1,73 +1,53 @@
 const result = document.querySelector("#result");
 const buttons = document.querySelectorAll("button");
 
-buttons.forEach((button) => {
-  button.addEventListener("click", playRound());
-});
-
 function getComputerChoice() {
-  const randomNumber = Math.round(Math.random());
-  if (randomNumber >= 0 && randomNumber <= 0.33) {
+  const randomNumber = Math.random();
+  if (randomNumber < 0.33) {
     return "rock";
-  } else if (randomNumber > 0.33 && randomNumber <= 0.66) {
+  } else if (randomNumber < 0.66) {
     return "paper";
-  } else {
-    return "scissor";
   }
-}
-
-function getHumanChoice() {
-  let choice = prompt("Which one choice from rock,paper,scissor?");
-  return choice.toLowerCase();
+  return "scissor";
 }
 
 function playRound(humanChoice, computerChoice) {
-  if (humanChoice == computerChoice) {
-    console.log("It's draw");
-    return;
+  humanChoice = humanChoice.toLowerCase();
+  computerChoice = computerChoice.toLowerCase();
+
+  if (humanChoice === computerChoice) {
+    return `It's a draw! You both chose ${humanChoice}.`;
   }
 
-  if (humanChoice == "rock" && computerChoice == "scissor") {
-    return "win";
-  } else if (humanChoice == "rock" && computerChoice == "paper") {
-    return "lose";
-  } else if (humanChoice == "paper" && computerChoice == "rock") {
-    return "win";
-  } else if (humanChoice == "paper" && computerChoice == "scissor") {
-    return "lose";
-  } else if (humanChoice == "scissor" && computerChoice == "paper") {
-    return "win";
-  } else if (humanChoice == "scissor" && computerChoice == "rock") {
-    return "lost";
-  } else {
-    console.log("Invalid input");
+  if (humanChoice === "rock") {
+    return computerChoice === "scissor"
+      ? "You win! Rock beats scissor."
+      : "You lose! Paper beats rock.";
   }
+
+  if (humanChoice === "paper") {
+    return computerChoice === "rock"
+      ? "You win! Paper beats rock."
+      : "You lose! Scissor beats paper.";
+  }
+
+  if (humanChoice === "scissor") {
+    return computerChoice === "paper"
+      ? "You win! Scissor beats paper."
+      : "You lose! Rock beats scissor.";
+  }
+
+  return "Invalid input.";
 }
 
-function playGame() {
-  let humanScore = 0;
-  let computerScore = 0;
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const humanSelection = button.textContent.toLowerCase();
+    const computerSelection = getComputerChoice();
+    const roundResult = playRound(humanSelection, computerSelection);
 
-  console.log(`---Round ${i + 1} ---`);
-  const humanSelection = getHumanChoice();
-  const computerSelection = getComputerChoice();
-  let result = playRound(humanSelection, computerSelection);
-  if (result == "win") {
-    humanScore++;
-  }
-  if (result == "lose") {
-    computerScore++;
-  }
-
-  console.log(
-    `Final Score -> You :  ${humanScore}, Computer : ${computerScore}`,
-  );
-  if (humanScore > computerScore) {
-    console.log("Your are the overall winner!");
-  } else if (humanScore < computerScore) {
-    console.log("Computer win the human!");
-  } else {
-    console.log("It's tie!");
-  }
-}
-playGame();
+    console.log(`Player: ${humanSelection}, Computer: ${computerSelection}`);
+    console.log(roundResult);
+    result.textContent = roundResult;
+  });
+});
